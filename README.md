@@ -1,5 +1,5 @@
 # Justdial-Scraper
-A Justdial scrpaer which scrapes Name,Address,Email,Website,Phone number from a particular link or for a particular vendor of a city with proxy rotation.
+A Justdial scraper which scrapes Name,Address,Email,Website,Phone number from a particular link or for a particular vendor type of a city with proxy rotation.
 
 Requirements:
 
