@@ -2,14 +2,10 @@ from lxml import html
 import time
 import datetime
 import sys
-import threading 
 import requests
 from random import choice
 from bs4 import BeautifulSoup
-# import xlsxcellr
 from openpyxl import Workbook
-
-
 
 url = "https://www.justdial.com/"
 city_names = []
@@ -32,7 +28,7 @@ reqhead = {
     "Accept-Encoding": "gzip, deflate, br",
     "Referer": "https://www.justdial.com/",
     "DNT": "1",
-    "Cookie": "_ctk=02d0099d7d6eff378938d764543ed2cdc4cdaaba21c288a030186e84cfb7f1f5; inweb_city=Mumbai; _ga=GA1.2.1819789862.1545375869; _gid=GA1.2.1178315208.1545375869;  JDTID=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDU0NjA1OTAsImp0aSI6Ik1qY3VOakF1TVRVdU9EWmZSbWx5WldadmVGOXNhVzUxZUE9PSIsImlzcyI6Ind3dy5qdXN0ZGlhbC5jb20iLCJuYmYiOjE1NDU0NjA1OTAsImV4cCI6MTU0NTU0Njk5MCwiZGF0YSI6eyJqZGVmbGciOiIzIn19.sPVchyUWtKD0EFbH-wf2TsxIbFUwfHvIgVO6L7ehkE8; inLogJdUID=9091812140500000008; new_user=0; JDSID=0kjTChQM1dQqrtyhf%252F1j6okwvWhyZ0dLhRt0ZUB6fsQ%253D; _mycart=0; PHPSESSID=165426ed1e4ed9ef919bf74d109e1e18; TKY=cdd64da24c0eb08f6ecc067909ac490e1efd3a1946ccbeaa770aca0376fca350; attn_user=login; main_city=Mumbai; ppc=; ak_bmsc=3E07912CE729B5B7BAC72A863CEBC22E172D5B281E54000094D81D5C4A604448~plG8pqSmPPlZkYs8FRgLrOXBh4k1gmM35dWh0TORXIQHHXopHpF7GyMsjLn4CtCTgZ+dhuMkKnelzBjXZfzlhBq/xON05Rq36sPStCVRNX1aiLMzIfIv0oPFDi2ouIqqeNnxR3cmEKJyN810avXtyoUf5PeJ8xnity9vs7W+PfUg9raqLDRLeVsBEGdvtao7/thfkBc28c3nZUH+Nw1f6POYAgk5Ya6tQkoevODrI2lwaypVBi/dZEy9Qkp9uNxz+cDa0f2zplbVNOsJPNVtzgg+0RHkuXRa/ASKY3ygaVHL2n+pmjNT1VbTk70xiZIpWQkuwnkPq2b/rgwZrVgS+9Iw==; scity=Mumbai; usrcity=Mumbai; dealBackCity=Mumbai; bm_sv=A92AA9368FD4EE5617BD471F55043CDE~zxVE3zaNBF0uwPUoncXZiCOe4bfS0NClbPxgTm2A7G/dx6sbF/6gyLyF7BSaJT0oO61JOlXrE67AmKvrdS/l7atZuiOT6nHzkKC551AKuEeotHbSu73EjEoAlzyMxGUP89S0i/Z763R1XnExICE+lrOA6W0Y3YE0321VTghN4fI=; _fbp=fb.1.1545459874693.112820884; jdeflg=0", #put your cookie here!
+    "Cookie": "", #put your cookie here!
     "Connection": "keep-alive",
     "Cache-Control": "max-age=0",
     "TE": "Trailers"
@@ -84,7 +80,6 @@ def cities():
 		for city_name in city.findAll('li'):
 			city_names.append(city_name.find('a').text.strip()	)
 			city_urls.append(city_name.find('a').get('href'))
-			# print(city_name.find('a').text)
 
 
 def categories(index):
@@ -184,10 +179,8 @@ def vendor_info(store_url,worksheet1):
 
 def scrape_vendor(worksheet1,url,start_page,end_page):
 	global page_nof,outfile
-	print(start_page,end_page)
 	if int(page_nof)+ int(start_page)-1 > int(end_page):
 		return
-	print(url)
 	try:
 		page = requests.get(url,headers=reqhead,proxies={"http": "{}".format(choice(proxy))},timeout =3)
 		print("Scraping page %s" %(page_nof+int(start_page)-1))
@@ -222,7 +215,6 @@ def main():
 	print("################")
 
 	worksheet1 = wb.active
-	# worksheet1.cell(1,1, 'Name')
 	recordpos = 1
 	worksheet1.cell(1,1, 'Name')
 	worksheet1.cell(1,2,'Address')
@@ -231,8 +223,6 @@ def main():
 	worksheet1.cell(1,5,'Whatsapp Link')
 	worksheet1.cell(1,6,'Categories')
 	recordpos = 2	
-	# wb.save(outfile)
-	# return 
 	print("################")
 	print("################")
 
@@ -241,7 +231,6 @@ def main():
 	enter = input()
 	if enter =="1":
 		cities()
-		# worksheet1 = workbook.add_worksheet('dataset')
 
 		print("Select the City to be scraped")
 		for i in city_names:
@@ -259,8 +248,6 @@ def main():
 		print("################")
 		start_page = input("Enter the starting page number\n")
 		end_page = input("Enter the ending page number\n")
-
-
 
 		print("################")
 		print("################")
